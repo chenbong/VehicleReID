@@ -5,7 +5,7 @@
 ```
 # code: /home/lmb/proj/vehicle-reid
 # experiment: /media/disk1/lmb/EXP
-# resnet50_fc256: /media/disk1/lmb/EXP/exp-vehicle-reid/train-ve1m+veid+veri/model_59.pt
+# resnet50_fc256 pretrain model: /media/disk1/lmb/EXP/exp-vehicle-reid/train-ve1m+veid+veri/model_59.pt
 ```
 
 ### Train in VehicleID (13.164k)
