@@ -1,12 +1,48 @@
-# VehicleReid
+# VehicleReID
 
 ## Experiment Results
 
 ### Train in VehicleID (13.164k)
 
+```bash
+# /home/lmb/proj/vehicle-reid/train_id.sh
+python train_xent_tri.py \
+-s vehicleid \
+-t vehicleid \
+--height 128 \
+--width 256 \
+--optim amsgrad \
+--lr 0.0003 \
+--max-epoch 60 \
+--stepsize 20 40 \
+--train-batch-size 512 \
+--test-batch-size 100 \
+-a resnet50 \
+--save-dir /media/disk1/lmb/log/exp \
+--gpu-devices "0, 1, 2, 3" \
+--use-avai-gpus \
+--test-size 800 \
+--workers 4
+
+# /home/lmb/proj/vehicle-reid/test_id.sh
+python train_xent_tri.py \
+-s vehicleid \
+-t vehicleid \
+--height 128 \
+--width 256 \
+--test-size 800 \
+--train-batch-size 1 \
+--test-batch-size 512 \
+--evaluate \
+-a resnet50 \
+--load-weights /media/disk1/lmb/EXP/exp-vehicle-reid/train-1m/model_best.pth \
+--save-dir /media/disk1/lmb/EXP/exp-vehicle-reid/test-1m-id \
+--root /media/disk1/lmb/DATASET/ \
+--gpu-devices "0, 1, 2, 3" \
+--use-avai-gpus
 ```
--a resnet50 (特征维度2048)
-```
+
+
 
 | **train (size)** | **test (size)**     | **h w** | **mAP** | **Rank-1** | **Rank-5** | **Rank-10** | **Rank-20** |
 | ---------------- | ------------------- | ------- | ------- | ---------- | ---------- | ----------- | ----------- |
@@ -28,7 +64,47 @@
 
 ### Train in Vehicle-1M (930k)
 
-**-a ** resnet50 (特征维度2048)
+```bash
+# /home/lmb/proj/vehicle-reid/train_1m.sh
+python train_xent_tri.py \
+-s vehicle1m \  # 训练集名称
+-t vehicle1m \  # 测试集名称
+--height 128 \
+--width 256 \
+--optim amsgrad \
+--lr 0.0003 \
+--max-epoch 60 \
+--stepsize 20 40 \
+--train-batch-size 256 \
+--test-batch-size 100 \
+-a resnet50 \ # resnet50模型的特征维度2048
+--save-dir /media/disk1/lmb/EXP/exp-vehicle-reid/train-1m \
+--gpu-devices "0, 1, 2, 3" \
+--use-avai-gpus \
+--test-size 1000 \  # 测试集大小
+--workers 32 \
+--root /media/disk1/lmb/DATASET/ \
+--resume /media/disk1/lmb/EXP/exp-vehicle-reid/train-1m/model_9.pt
+
+# /home/lmb/proj/vehicle-reid/test_1m.sh
+python train_xent_tri.py \
+-s vehicle1m \  # 训练集名称
+-t vehicle1m \  # 测试集名称
+--height 128 \
+--width 256 \
+--test-size 5527 \  # 测试集大小
+--train-batch-size 1 \ # 不起作用
+--test-batch-size 512 \
+--evaluate \
+-a resnet50 \
+--load-weights /media/disk1/lmb/EXP/exp-vehicle-reid/train-1m/model_best.pth \
+--save-dir /media/disk1/lmb/EXP/exp-vehicle-reid/test-1m \
+--root /media/disk1/lmb/DATASET/ \
+--gpu-devices "0, 1, 2, 3" \
+--use-avai-gpus
+```
+
+
 
 | **train (size)**  | **test (size)**     | **h w**  | **mAP** | **Rank-1** | **Rank-5** | **Rank-10** | **Rank-20** |
 | ----------------- | ------------------- | -------- | ------- | ---------- | ---------- | ----------- | ----------- |
@@ -51,9 +127,46 @@
 ### Train in Vehicle-1M、VehicleID、VeRi (990k)
 
 ```bash
--a  resnet50_fc256 (特征维度256)
---load-weights /media/disk1/lmb/EXP/exp-vehicle-reid/train-ve1m+veid+veri/model_59.pt
+# /home/lmb/proj/vehicle-reid/train_ve1m+veid+veri.sh
+python train_xent_tri.py \
+-s vehicle1m vehicleid veri \  # 训练集名称（多个训练集）
+-t vehicle1m vehicleid veri \  # 测试集名称（多个测试集）
+--height 128 \
+--width 256 \
+--optim amsgrad \
+--lr 0.0003 \
+--max-epoch 60 \
+--stepsize 20 40 \
+--train-batch-size 256 \
+--test-batch-size 100 \
+-a resnet50_fc256 \  # 特征维度256
+--save-dir /media/disk1/lmb/EXP/exp-vehicle-reid/train-ve1m+veid+veri \
+--gpu-devices "0, 1, 2, 3" \
+--use-avai-gpus \
+--test-size 1000 \  # 测试集大小（多个测试集时，需要在代码里定义不同测试集的默认大小）
+--workers 16 \
+--root /media/disk1/lmb/DATASET/ \
+--label-smooth
+
+# /home/lmb/proj/vehicle-reid/test_ve1m+veid+veri.sh
+python train_xent_tri.py \
+-s vehicleid \
+-t vehicleid \
+--height 128 \
+--width 256 \
+--test-size 800 \
+--train-batch-size 1 \
+--test-batch-size 512 \
+--evaluate \
+-a resnet50_fc256 \  # 特征维度256
+--load-weights /media/disk1/lmb/EXP/exp-vehicle-reid/train-ve1m+veid+veri/model_59.pt \
+--save-dir /media/disk1/lmb/EXP/exp-vehicle-reid/test-ve1m+veid+veid \
+--root /media/disk1/lmb/DATASET/ \
+--gpu-devices "0, 1, 2, 3" \
+--use-avai-gpus
 ```
+
+
 
 | **train (size)**                 | **test (size)**     | **h w**  | **mAP** | **Rank-1** | **Rank-5** | **Rank-10** | **Rank-20** |
 | -------------------------------- | ------------------- | -------- | ------- | ---------- | ---------- | ----------- | ----------- |
