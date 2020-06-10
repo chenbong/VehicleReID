@@ -4,7 +4,9 @@
 
 ### Train in VehicleID (13.164k)
 
-**-a ** resnet50 (特征维度2048)
+```
+-a resnet50 (特征维度2048)
+```
 
 | **train (size)** | **test (size)**     | **h w** | **mAP** | **Rank-1** | **Rank-5** | **Rank-10** | **Rank-20** |
 | ---------------- | ------------------- | ------- | ------- | ---------- | ---------- | ----------- | ----------- |
@@ -48,9 +50,10 @@
 
 ### Train in Vehicle-1M、VehicleID、VeRi (990k)
 
-**-a ** resnet50_fc256 (特征维度256)
-
-**--load-weights** /media/disk1/lmb/EXP/exp-vehicle-reid/train-ve1m+veid+veri/model_59.pt
+```bash
+-a  resnet50_fc256 (特征维度256)
+--load-weights /media/disk1/lmb/EXP/exp-vehicle-reid/train-ve1m+veid+veri/model_59.pt
+```
 
 | **train (size)**                 | **test (size)**     | **h w**  | **mAP** | **Rank-1** | **Rank-5** | **Rank-10** | **Rank-20** |
 | -------------------------------- | ------------------- | -------- | ------- | ---------- | ---------- | ----------- | ----------- |
