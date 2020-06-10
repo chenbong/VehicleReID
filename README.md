@@ -7,8 +7,8 @@
 ```bash
 # /home/lmb/proj/vehicle-reid/train_id.sh
 python train_xent_tri.py \
--s vehicleid \
--t vehicleid \
+-s vehicleid \  # 训练集名称
+-t vehicleid \  # 测试集名称
 --height 128 \
 --width 256 \
 --optim amsgrad \
@@ -17,24 +17,24 @@ python train_xent_tri.py \
 --stepsize 20 40 \
 --train-batch-size 512 \
 --test-batch-size 100 \
--a resnet50 \
+-a resnet50 \  # resnet50模型的特征维度2048
 --save-dir /media/disk1/lmb/log/exp \
 --gpu-devices "0, 1, 2, 3" \
 --use-avai-gpus \
---test-size 800 \
+--test-size 800 \  # 测试集大小
 --workers 4
 
 # /home/lmb/proj/vehicle-reid/test_id.sh
 python train_xent_tri.py \
--s vehicleid \
--t vehicleid \
+-s vehicleid \  # 训练集名称
+-t vehicleid \  # 测试集名称
 --height 128 \
 --width 256 \
 --test-size 800 \
 --train-batch-size 1 \
 --test-batch-size 512 \
---evaluate \
--a resnet50 \
+--evaluate \ 
+-a resnet50 \ # resnet50模型的特征维度2048
 --load-weights /media/disk1/lmb/EXP/exp-vehicle-reid/train-1m/model_best.pth \
 --save-dir /media/disk1/lmb/EXP/exp-vehicle-reid/test-1m-id \
 --root /media/disk1/lmb/DATASET/ \
